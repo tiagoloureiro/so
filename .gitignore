@@ -1,6 +1,7 @@
-# Para ignorar todos os ficheiros sem extensão menos o makefile
+# Para ignorar todos os ficheiros sem extensão menos o makefile e config
 *
 !*.*
 !*/
 !makefile
+!config
 #
