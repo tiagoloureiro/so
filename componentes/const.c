@@ -4,21 +4,34 @@
 #include <string.h>
 #include <limits.h>
 
+ssize_t readln(int fildes, void *buf, size_t nbyte){
+  ssize_t res = 0;
+  int n;
+  char *b = buf;
+
+  while ((n = read(fildes, b, 1)) > 0){
+    if(res >= nbyte) break;
+    if(n < 0) break;
+    if(*b == '\n') return res;
+    res++;
+    b++;
+  }
+
+  return 0;
+}
+
 int main(int argc, char *argv[]){
-  int n = 0, bites = 1;
+  char buf[PIPE_BUF];
+  ssize_t n;
+  ssize_t i = 0;
 
-  if(argc == 2){
-    bites = PIPE_BUF;
-    char c[bites];
+  while((n = readln(0, buf, sizeof(buf))) > 0){
+    write(1, buf, n);
 
-    while (1){
-      n = read(0, &c, bites);
-      if(n > 0){
-        write(1, &c, n);
-      }else{
-        return 0;
-      }
+    if(argc == 2){
+      printf(":%s\n", argv[1]);
     }
+
   }
 
   return 0;
