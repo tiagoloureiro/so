@@ -5,21 +5,20 @@
 #include <string.h>
 #include <limits.h>
 
-int get_coluna(char *p, int c1, int c2, int* num[2]){
-  char * pch = strtok (p,":");
+int* get_coluna(char *p, int c1, int c2, int* num){
+  char* pch = strtok (p,":");
   int i;
-  int nu[2] = &num;
 
   for(i=2; pch, i<=c2; i++){
     pch = strtok (NULL, ":");
     if(i==c1){
-      nu[0] = atoi(pch);
+      num[0] = atoi(pch);
     }
   }
 
-  nu[1] = atoi(pch);
+  num[1] = atoi(pch);
 
-  return 0;
+  return num;
 }
 
 int main(int argc, char *argv[]){
@@ -27,13 +26,13 @@ int main(int argc, char *argv[]){
   char pal[PIPE_BUF];
   ssize_t n;
   int v1, v2;
-  int *num[2];
+  int *num = malloc(2);
 
   while((n = getline(&buf, &n, stdin)) != -1){
     if(argc == 4){
       memcpy(pal, buf, n-1);
 
-      get_coluna(pal, atoi(argv[1]), atoi(argv[3]), num);
+      num = get_coluna(pal, atoi(argv[1]), atoi(argv[3]), num);
       v1 = num[0];
       v2 = num[1];
 
@@ -66,9 +65,6 @@ int main(int argc, char *argv[]){
       }else{
         break;
       }
-
-      num[0] = 0;
-      num[1] = 0;
     }
   }
 
