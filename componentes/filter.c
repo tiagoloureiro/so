@@ -4,22 +4,7 @@
 #include <fcntl.h>
 #include <string.h>
 #include <limits.h>
-
-int* get_coluna(char *p, int c1, int c2, int* num){
-  char* pch = strtok (p,":");
-  int i;
-
-  for(i=2; pch, i<=c2; i++){
-    pch = strtok (NULL, ":");
-    if(i==c1){
-      num[0] = atoi(pch);
-    }
-  }
-
-  num[1] = atoi(pch);
-
-  return num;
-}
+#include "funcoes.h"
 
 int main(int argc, char *argv[]){
   char *buf = NULL;
@@ -28,37 +13,39 @@ int main(int argc, char *argv[]){
   int v1, v2;
   int *num = malloc(2);
 
-  while((n = getline(&buf, &n, stdin)) != -1){
-    if(argc == 4){
-      memcpy(pal, buf, n-1);
+  if(argc == 4){
+    while((n = getline(&buf, &n, stdin)) != -1){
+      memcpy(pal, buf, n);
+      pal[n-1] = '\0';
 
       num = get_coluna(pal, atoi(argv[1]), atoi(argv[3]), num);
       v1 = num[0];
       v2 = num[1];
 
-      printf("%d - %d\n", v1, v2);
+      /*v1 = get_coluna(pal, atoi(argv[1]));
+      v2 = get_coluna(pal, atoi(argv[3]));*/
 
-      if(strcmp(argv[2], "<")){
+      if(strcmp(argv[2], "<") == 0){
         if(v1 < v2)
           write(1, buf, n);
 
-      }else if(strcmp(argv[2], "<=")){
+      }else if(strcmp(argv[2], "<=") == 0){
         if(v1 <= v2)
           write(1, buf, n);
 
-      }else if(strcmp(argv[2], ">=")){
+      }else if(strcmp(argv[2], ">=") == 0){
         if(v1 >= v2)
           write(1, buf, n);
 
-      }else if(strcmp(argv[2], ">")){
+      }else if(strcmp(argv[2], ">") == 0){
         if(v1 > v2)
           write(1, buf, n);
 
-      }else if(strcmp(argv[2], "=")){
+      }else if(strcmp(argv[2], "=") == 0){
         if(v1 == v2)
           write(1, buf, n);
 
-      }else if(strcmp(argv[2], "!=")){
+      }else if(strcmp(argv[2], "!=") == 0){
         if(v1 != v2)
           write(1, buf, n);
 
