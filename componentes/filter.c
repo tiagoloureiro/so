@@ -21,10 +21,7 @@ int main(int argc, char *argv[]){
       num = get_coluna(pal, atoi(argv[1]), atoi(argv[3]), num);
       v1 = num[0];
       v2 = num[1];
-
-      /*v1 = get_coluna(pal, atoi(argv[1]));
-      v2 = get_coluna(pal, atoi(argv[3]));*/
-
+ 
       if(strcmp(argv[2], "<") == 0){
         if(v1 < v2)
           write(1, buf, n);
