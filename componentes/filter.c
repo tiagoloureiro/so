@@ -18,10 +18,10 @@ int main(int argc, char *argv[]){
       memcpy(pal, buf, n);
       pal[n-1] = '\0';
 
-      num = get_coluna(pal, atoi(argv[1]), atoi(argv[3]), num);
+      num = get_coluna_two(pal, atoi(argv[1]), atoi(argv[3]), num);
       v1 = num[0];
       v2 = num[1];
- 
+
       if(strcmp(argv[2], "<") == 0){
         if(v1 < v2)
           write(1, buf, n);

@@ -26,7 +26,7 @@ int main(int argc, char *argv[]){
         pal[n-1] = '\0';
         sprintf(pal, "%s:%s\n", pal, argv[1]);
 
-        num = get_coluna(pal, 2, 4, num);
+        get_coluna_two(pal, 2, 4, num);
         col2 = num[0];
         col4 = num[1];
 

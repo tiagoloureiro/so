@@ -1,7 +1,8 @@
-all: lib comp_const comp_filter run_teste
+all: lib comp_const comp_filter comp_window run_teste
 
 lib:
 	@gcc -o funcoes.o -c funcoes.c
+	@gcc -o queue.o -c queue.c
 
 run_teste:
 	@echo "# Componentes"
@@ -15,3 +16,6 @@ comp_const:
 
 comp_filter:
 	@gcc filter.c funcoes.o -o filter
+
+comp_window:
+	@gcc window.c funcoes.o -o window
