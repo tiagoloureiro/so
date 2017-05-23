@@ -8,6 +8,30 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+int join(char *argumentos[], int n, char *str, char *linha){
+  int coluna;
+
+  for(int i=1; i<n; i++){
+    if(argumentos[i][0] == '$'){
+      coluna = atoi(argumentos[i]+1);
+      const char* aux = get_coluna_str(linha, coluna);
+      if(i==1)
+        strcpy(str, aux);
+      else
+        strcat(str, aux);
+    }else{
+      if(i==1)
+        strcpy(str, argumentos[i]);
+      else
+        strcat(str, argumentos[i]);
+    }
+
+    if(i != n){
+      strcat(str, " ");
+    }
+  }
+}
+
 int main(int argc, char *argv[]){
   char *buf = NULL;
   char pal[PIPE_BUF];
@@ -23,16 +47,6 @@ int main(int argc, char *argv[]){
   char comando[PIPE_BUF];
 
   if(argc > 2){
-
-    for(int i=1; i<argc; i++){
-      printf("%s\n", argv[i]);
-      /*if(argv[i][0] == '$'){
-        printf("tito\n");
-        coluna = atoi(argv[i]+1);
-      }
-      sprintf(comando, "%s:%s\n", comando, argv[i]);*/
-    }
-
     while((n = getline(&buf, &n, stdin)) != -1){
       linha_atual++;
       //print_array(linhas, atual, maximo);
@@ -41,13 +55,11 @@ int main(int argc, char *argv[]){
 
       memcpy(pal, buf, n);
       pal[n-1] = '\0';
-      aux = get_coluna(pal, coluna);
 
-      //system(comando);
+      join(argv, argc, comando, pal);
+      printf("%s\n", comando);
 
     }
-
-    printf("%s\n%d\n", comando,coluna);
   }
   return 0;
 }
