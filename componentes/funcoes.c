@@ -2,6 +2,7 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 int* get_coluna_two(char *p, int c1, int c2, int* num){
   int coluna=1, i;
@@ -29,23 +30,17 @@ int get_coluna(char *p, int c){
   return atoi(p+i);
 }
 
-const char* get_coluna_str(char *p, int c){
+char* get_coluna_str(char *p, int c){
   int coluna=1, i, j=0;
-  char str[PIPE_BUF];
-  char *str_return;
+  char *str = malloc (sizeof (char) * PIPE_BUF);
 
-  for(i=1; p[i], coluna<c; i++){
+  for(i=0; p[i], coluna<c; i++){
     if(p[i] == ':') coluna++;
   }
 
-  while(p[i] != '\0' || p[i] != ':'){
-    str[j] == p[i];
-    j++;
-    i++;
+  for(j=0; p[i] && p[i] != ':'; j++, i++){
+    str[j] = p[i];
   }
-  str[j] == '\0';
 
-  snprintf(str_return, j, "%s", str);
-
-  return str_return;
+  return str;
 }
