@@ -17,6 +17,10 @@ run_teste:
 	@echo "# 1.3 #"
 	@echo "#######"
 	@./window 4 avg 2 < config
+	@echo "#######"
+	@echo "# 1.4 #"
+	@echo "#######"
+	@./spawn mailx -s \$3 tiagoloureiro@necc.di.uminho.pt < config
 
 comp_const:
 	@gcc const.c funcoes.o -o const
