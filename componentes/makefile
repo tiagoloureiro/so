@@ -26,3 +26,6 @@ comp_filter:
 
 comp_window:
 	@gcc window.c funcoes.o -o window
+
+comp_spawn:
+	@gcc spawn.c funcoes.o -o spawn
