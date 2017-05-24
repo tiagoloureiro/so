@@ -9,12 +9,12 @@
 #include <sys/wait.h>
 
 int main(int argc, char * argv[]){
-
   char *buf = NULL;
-  char pal[PIPE_BUF];
+  //char *pal[PIPE_BUF];
+  char **pal = malloc( sizeof( char * ) * PIPE_BUF );
   ssize_t n;
   int coluna;
-  int tam;
+  int tam[PIPE_BUF];
 
   int j = 0;
   int linhas[PIPE_BUF];
@@ -26,19 +26,19 @@ int main(int argc, char * argv[]){
   if(argc > 2){
     while((n = getline(&buf, &n, stdin)) != -1){
       linha_atual++;
+      tam[j] = 0;
 
-      tam = 0;
-
-      memcpy(pal, buf, n);
-      pal[n-1] = '\0';
+      pal[j] = malloc( PIPE_BUF );
+      memcpy(pal[j], buf, n);
+      pal[j][n-1] = '\0';
 
       if(!fork()){
         for(int i=2; i<argc; i++){
           if(argv[i][0] == '$'){
             coluna = atoi(argv[i]+1);
-            strcpy(argv[i], get_coluna_str(pal, coluna));
+            strcpy(argv[i], get_coluna_str(pal[j], coluna));
           }
-          sleep(4-j);
+          //sleep(4-j);
         }
         execvp(argv[1], argv+1);
         _exit(0);
@@ -50,8 +50,8 @@ int main(int argc, char * argv[]){
       int estado;
       wait(&estado);
       if (WIFEXITED(estado)){
-        tam += sprintf(pal, "%s:%d\n", pal, estado);
-        write(1, pal, tam);
+        tam[i] += sprintf(pal[i], "%s:%d\n", pal[i], estado);
+        write(1, pal[i], tam[i]);
       }
     }
   }
