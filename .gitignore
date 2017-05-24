@@ -4,6 +4,7 @@
 !*/
 !makefile
 !config
+!input
 #
 
 *.o
