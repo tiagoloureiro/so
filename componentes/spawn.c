@@ -16,7 +16,7 @@ int main(int argc, char * argv[]){
   int coluna;
   int tam;
 
-  int res = 0;
+  int j = 0;
   int linhas[PIPE_BUF];
   int linha_atual = 0;
   int aux;
@@ -25,7 +25,6 @@ int main(int argc, char * argv[]){
 
   if(argc > 2){
     while((n = getline(&buf, &n, stdin)) != -1){
-      int estado = -1;
       linha_atual++;
 
       tam = 0;
@@ -39,14 +38,21 @@ int main(int argc, char * argv[]){
             coluna = atoi(argv[i]+1);
             strcpy(argv[i], get_coluna_str(pal, coluna));
           }
+          sleep(4-j);
         }
         execvp(argv[1], argv+1);
         _exit(0);
       }
+      j++;
+    }
 
+    for(int i=0; i<j; i++){
+      int estado;
       wait(&estado);
-      tam += sprintf(pal, "%s:%d\n", pal, estado);
-      write(1, pal, tam);
+      if (WIFEXITED(estado)){
+        tam += sprintf(pal, "%s:%d\n", pal, estado);
+        write(1, pal, tam);
+      }
     }
   }
   return 0;
