@@ -10,16 +10,14 @@
 
 int main(int argc, char * argv[]){
   char *buf = NULL;
-  //char *pal[PIPE_BUF];
   char **pal = malloc( sizeof( char * ) * PIPE_BUF );
   ssize_t n;
-  int coluna;
   int tam[PIPE_BUF];
 
   int j = 0;
-  int linhas[PIPE_BUF];
   int linha_atual = 0;
   int aux;
+  int coluna;
 
   char *comando[PIPE_BUF];
 

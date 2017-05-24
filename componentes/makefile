@@ -1,9 +1,12 @@
-all: lib comp_const comp_filter comp_window run_teste
+all:
+	@echo "Tito"
+
+componentes: lib comp_const comp_filter comp_window run_componentes
 
 lib:
 	@gcc -o funcoes.o -c funcoes.c
 
-run_teste:
+run_componentes:
 	@echo "# Componentes"
 	@echo "#######"
 	@echo "# 1.1 #"
