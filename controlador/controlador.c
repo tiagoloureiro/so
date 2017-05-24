@@ -32,23 +32,18 @@ int main(int argc, char * argv[]){
     for(int k=0; pal[j] && pal[j][k] != ' '; k++)
       programa[j][k+2] = pal[j][k];
 
-    if(!fork()){
+    if(strcmp(programa[j], "./node") == 0){
+      strcpy(argumentos[j], pal[j]+5);
+    }else if(strcmp(programa[j], "./connect") == 0){
+      strcpy(argumentos[j], pal[j]+8);
+    }else if(strcmp(programa[j], "./disconnect") == 0){
+      strcpy(argumentos[j], pal[j]+11);
+    }else if(strcmp(programa[j], "./inject") == 0){
+      strcpy(argumentos[j], pal[j]+7);
+    }
 
-      if(strcmp(programa[j], "./node") == 0){
-        strcpy(argumentos[j], pal[j]+5);
-        //printf("node %s\n", argumentos[j]);
-        printf("%s\n", argumentos[j]);
-        execvp(programa[j], (char * const*) argumentos[j]);
-      }else if(strcmp(programa[j], "./connect") == 0){
-        strcpy(argumentos[j], pal[j]+8);
-        //printf("connect %s\n", argumentos[j]);
-      }else if(strcmp(programa[j], "./disconnect") == 0){
-        strcpy(argumentos[j], pal[j]+11);
-        //printf("disconnect %s\n", argumentos[j]);
-      }else if(strcmp(programa[j], "./inject") == 0){
-        strcpy(argumentos[j], pal[j]+7);
-        //printf("inject %s\n", argumentos[j]);
-      }
+    if(!fork()){
+      execlp(programa[j], programa[j], (char * const*) argumentos[j], (char *)0);
 
       _exit(0);
     }
@@ -62,7 +57,7 @@ int main(int argc, char * argv[]){
 
     wait(&estado);
     if (WIFEXITED(estado)){
-      tam = sprintf(buff, "%s -> %s (%d)\n", programa[i], argumentos[i], estado);
+      tam = sprintf(buff, "%-11s -> %-20s (%d)\n", programa[i], argumentos[i], estado);
       write(1, buff, tam);
     }
   }
