@@ -1,38 +1,37 @@
-all:
-	@echo "Tito"
+all: componentes run
 
-componentes: lib comp_const comp_filter comp_window run_componentes
+componentes: lib comp_const comp_filter comp_window
 
 lib:
 	@gcc -o funcoes.o -c funcoes.c
 
-run_componentes:
-	@echo "# Componentes"
-	@echo "#######"
-	@echo "# 1.1 #"
-	@echo "#######"
-	@./const 10 < config
-	@echo "#######"
-	@echo "# 1.2 #"
-	@echo "#######"
-	@./filter 2 "<" 4 < config
-	@echo "#######"
-	@echo "# 1.3 #"
-	@echo "#######"
-	@./window 4 avg 2 < config
-	@echo "#######"
-	@echo "# 1.4 #"
-	@echo "#######"
-	@./spawn mailx -s '$3' tiagoloureiro@necc.di.uminho.pt < config
-
 comp_const:
-	@gcc const.c funcoes.o -o const
+	@gcc const.c funcoes.o -o const.c
 
 comp_filter:
-	@gcc filter.c funcoes.o -o filter
+	@gcc filter.c funcoes.o -o filter.c
 
 comp_window:
-	@gcc window.c funcoes.o -o window
+	@gcc window.c funcoes.o -o window.c
 
 comp_spawn:
-	@gcc spawn.c funcoes.o -o spawn
+	@gcc spawn.c funcoes.o -o spawn.c
+
+#run:
+#	@echo "# Componentes"
+#	@echo "#######"
+#	@echo "# 1.1 #"
+#	@echo "#######"
+#	@./const 10 < config
+#	@echo "#######"
+#	@echo "# 1.2 #"
+#	@echo "#######"
+#	@./filter 2 "<" 4 < config
+#	@echo "#######"
+#	@echo "# 1.3 #"
+#	@echo "#######"
+#	@./window 4 avg 2 < config
+#	@echo "#######"
+#	@echo "# 1.4 #"
+#	@echo "#######"
+#	@./spawn mailx -s '$3' tiagoloureiro@necc.di.uminho.pt < config
