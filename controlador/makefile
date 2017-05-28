@@ -1,13 +1,10 @@
-all: controlador cont_node run_controlador
-
-run_controlador:
-	@echo "#########"
-	@echo "# 2.1.1 #"
-	@echo "#########"
-	@./controlador < input
+all: lib controlador run
 
 controlador:
-	@gcc controlador.c -o controlador
+	@gcc controlador.c node.o -o controlador
 
-cont_node:
-	@gcc node.c -o node
+lib:
+	@gcc -o node.o -c node.c
+
+run:
+	@./controlador < input
