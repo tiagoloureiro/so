@@ -1,4 +1,5 @@
 #include "node.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <fcntl.h>
@@ -14,13 +15,11 @@ int node(char* id, char* argv[]){
 
   int fd = open(str, O_RDONLY);
 
-  /*while(1){
+  while(1){
     read(fd, str, PIPE_BUF);
 
-    //execvp(argv[0], argv+1);
-  }*/
-
-  if(id)
+    dup2(fd,1);
+  }
 
   return 0;
 }

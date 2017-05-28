@@ -1,3 +1,5 @@
+#include "node.h"
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
@@ -8,8 +10,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
-#include "node.c"
 
 #define NOS 100
 
@@ -47,6 +47,8 @@ int connect(char** argumentos){
     int fd = open(pipe, O_WRONLY);
 
     write(fd, str, strlen(str));
+
+    printf("id:%s -> connect:%s|%s -> str: %s\n", argumentos[i], argumentos[i], argumentos[i+1], str);
 
     close(fd);
   }

@@ -1,5 +1,5 @@
-#ifndef _FUNCOES_
-#define _FUNCOES_
+#ifndef _NODE_
+#define _NODE_
 
 int node(char* id, char* argv[]);
 
