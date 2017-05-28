@@ -1,4 +1,5 @@
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <sys/wait.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -8,59 +9,103 @@
 #include <string.h>
 #include <stdlib.h>
 
-int main(int argc, char * argv[]){
-  char *buf = NULL;
-  char **pal = malloc( sizeof( char * ) * PIPE_BUF );
-  ssize_t n;
-  int tam[PIPE_BUF];
+#include "node.c"
 
-  char **programa = malloc( sizeof( char * ) * PIPE_BUF );
-  char **argumentos = malloc( sizeof( char * ) * PIPE_BUF );
+#define NOS 100
 
-  int j;
+#define VAZIO 0
+#define ABERTO 1
 
-  for(j=0; (n = getline(&buf, &n, stdin)) != -1; j++){
-    pal[j] = malloc( PIPE_BUF );
-    memcpy(pal[j], buf, n);
-    pal[j][n-1] = '\0';
+int nodes[NOS];
 
-    programa[j] = malloc( PIPE_BUF );
-    argumentos[j] = malloc( PIPE_BUF );
+char* separa(char *pal, char** argumentos){
+  char* pch;
 
-    programa[j][0] = '.';
-    programa[j][1] = '/';
-    for(int k=0; pal[j] && pal[j][k] != ' '; k++)
-      programa[j][k+2] = pal[j][k];
+  pch = strtok (pal," ");
 
-    if(strcmp(programa[j], "./node") == 0){
-      strcpy(argumentos[j], pal[j]+5);
-    }else if(strcmp(programa[j], "./connect") == 0){
-      strcpy(argumentos[j], pal[j]+8);
-    }else if(strcmp(programa[j], "./disconnect") == 0){
-      strcpy(argumentos[j], pal[j]+11);
-    }else if(strcmp(programa[j], "./inject") == 0){
-      strcpy(argumentos[j], pal[j]+7);
-    }
-
-    if(!fork()){
-      execlp(programa[j], programa[j], (char * const*) argumentos[j], (char *)0);
-
-      _exit(0);
-    }
+  for (int k=0; pch != NULL; k++){
+    argumentos[k] = malloc( PIPE_BUF );
+    sprintf(argumentos[k], "%s", pch);
+    pch = strtok (NULL, " ");
   }
 
-  for(int i=0; i<j; i++){
-    int estado;
+  return pch;
+}
 
-    char buff[PIPE_BUF];
-    int tam;
+int connect(char** argumentos){
+  char str[PIPE_BUF];
 
-    wait(&estado);
-    if (WIFEXITED(estado)){
-      tam = sprintf(buff, "%-11s -> %-20s (%d)\n", programa[i], argumentos[i], estado);
-      write(1, buff, tam);
+  for(int i=0; argumentos[i+1]; i++){
+    char pipe[PIPE_BUF];
+
+    strcpy(str, "connect ");
+    strcat(str, argumentos[i+1]);
+
+    strcpy(pipe, "pipe_");
+    strcat(pipe, argumentos[i]);
+
+    int fd = open(pipe, O_WRONLY);
+
+    write(fd, str, strlen(str));
+
+    close(fd);
+  }
+}
+
+int avalia_comando(char** argumentos, ssize_t n){
+  char str[PIPE_BUF];
+
+  if(strcmp(argumentos[0], "node") == 0 && nodes[atoi(argumentos[1])-1] == VAZIO){
+
+    strcpy(str, "pipe_");
+    strcat(str, argumentos[1]);
+
+    // Cria o pipe
+    mkfifo(str, 0666);
+
+    // Cria o processo
+    int pid = fork();
+    if(pid == 0){
+      node(argumentos[1], argumentos+2);
+      _exit(0);
     }
+    nodes[atoi(argumentos[1])-1] = ABERTO;
+    //write(fd, pal, n);
+  }else if(strcmp(argumentos[0], "connect") == 0){
+    connect(argumentos+1);
   }
 
   return 0;
+}
+
+int main(int argc, char * argv[]){
+  char *buf = NULL;
+  ssize_t n;
+
+  for(int n=0; n<NOS; n++) nodes[n] = 0;
+  int i;
+
+  // Criar 100 named pipes
+  /*for(int n=0; n<NOS; n++){
+    char str[PIPE_BUF];
+    sprintf(str, "pipe_%d", n+1);
+    mkfifo(str, 0666);
+  }*/
+
+  //for(int n=0; n<NOS; n++) nodes[n] = fork();
+
+  char **argumentos = malloc( (sizeof(char *)) * PIPE_BUF);
+
+  for(i=0; (n = getline(&buf, &n, stdin)) != -1; i++){
+    char aux[PIPE_BUF];
+
+    //printf("%s.\n", buf);
+
+    memcpy(aux, buf, n);
+    aux[n-1] = '\0';
+
+    separa(aux, argumentos);
+    avalia_comando(argumentos, n);
+  }
+
 }

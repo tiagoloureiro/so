@@ -1,34 +1,26 @@
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <limits.h>
+#include "node.h"
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+#include <fcntl.h>
+#include <unistd.h>
 
-int main(int argc, char * argv[]){
-  if(argc == 4 && strcmp(argv[2], "const") == 0){
-    printf("const\n");
-  }else if(argc == 6 && strcmp(argv[2], "filter") == 0){
-    printf("filter\n");
-  }else if(argc == 6 && strcmp(argv[2], "window") == 0){
-    printf("window\n");
-  }else if(argc > 3 && strcmp(argv[2], "cut") == 0){
-    printf("cut\n");
-  }else if(argc > 3 && strcmp(argv[2], "grep") == 0){
-    printf("grep\n");
-  }else if(argc > 3 && strcmp(argv[2], "tee") == 0){
-    printf("tee\n");
-  }else if(argc > 3 && strcmp(argv[2], "spawn") == 0){
-    printf("spawn\n");
-  }
+#include <limits.h>
 
-  /*FILE *f = fopen("file.txt", "w");
-  if (f == NULL)
-  {
-      printf("Error opening file!\n");
-      exit(1);
-  }
-  fprintf(f, "Some text\n");*/
+int node(char* id, char* argv[]){
+  char str[PIPE_BUF];
+
+  strcpy(str, "pipe_");
+  strcat(str, id);
+
+  int fd = open(str, O_RDONLY);
+
+  /*while(1){
+    read(fd, str, PIPE_BUF);
+
+    //execvp(argv[0], argv+1);
+  }*/
+
+  if(id)
 
   return 0;
 }
