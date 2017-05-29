@@ -1,6 +1,6 @@
-all:
+all: remove
 	@cd controlador && $(MAKE) -s
 	@cd componentes && $(MAKE) -s
 
 remove:
-	@cd controlador && rm node.o 
+	@find . -name \*.o -delete

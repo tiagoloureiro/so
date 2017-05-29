@@ -118,7 +118,9 @@ int window(char *argv[], int in, int out){
   n_valores = atoi(argv[3]);
   opcao = argv[2];
 
+  int stdin_original = dup(0);
   dup2(in, 0);
+
   while((n = getline(&buf, &n, stdin)) != -1){
     linha_atual++;
     //print_array(linhas, atual, maximo);
@@ -146,6 +148,8 @@ int window(char *argv[], int in, int out){
     tam += sprintf(pal, "%s:%d\n", pal, res);
     write(out, pal, n + tam + 1);
   }
+
+  dup2(stdin_original, in);
 
     //print_array(linhas, linha_atual-1);
   return 0;

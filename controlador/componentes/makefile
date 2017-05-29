@@ -1,6 +1,6 @@
-all: lib componentes
+all: componentes
 
-componentes: window spawn 
+componentes: lib window spawn const
 
 lib:
 	@gcc -o funcoes.o -c funcoes.c
