@@ -1,12 +1,14 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <string.h>
-#include <limits.h>
-
 #include "const.h"
 #include "funcoes.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include <unistd.h>
+#include <fcntl.h>
+
+#include <limits.h>
 
 int constante( char* argv[], int in, int out){
   char *buf = NULL;
