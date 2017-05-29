@@ -18,7 +18,7 @@
 
 int nodes[NOS];
 
-char* separa(char *pal, char** argumentos){
+int separa(char *pal, char** argumentos){
   char* pch;
 
   pch = strtok (pal," ");
@@ -29,7 +29,7 @@ char* separa(char *pal, char** argumentos){
     pch = strtok (NULL, " ");
   }
 
-  return pch;
+  return 0;
 }
 
 int connect(char** argumentos){
@@ -42,13 +42,13 @@ int connect(char** argumentos){
     strcat(str, argumentos[i+1]);
 
     strcpy(pipe, "pipe_");
-    strcat(pipe, argumentos[i]);
+    strcat(pipe, argumentos[0]);
 
     int fd = open(pipe, O_WRONLY);
 
     write(fd, str, strlen(str));
 
-    printf("id:%s -> connect:%s|%s -> str: %s\n", argumentos[i], argumentos[i], argumentos[i+1], str);
+    //printf("id: %s ligado a: %s\n", argumentos[0], argumentos[i+1]);
 
     close(fd);
   }
@@ -64,6 +64,10 @@ int avalia_comando(char** argumentos, ssize_t n){
 
     // Cria o pipe
     mkfifo(str, 0666);
+
+    /*for(int i=2; argumentos[i]; i++)
+      printf("%s | ", argumentos[i]);
+    printf("\n");*/
 
     // Cria o processo
     int pid = fork();
@@ -96,18 +100,20 @@ int main(int argc, char * argv[]){
 
   //for(int n=0; n<NOS; n++) nodes[n] = fork();
 
-  char **argumentos = malloc( (sizeof(char *)) * PIPE_BUF);
+  //memset
+  char ***argumentos = malloc( (sizeof(char *) * PIPE_BUF) * PIPE_BUF);
 
   for(i=0; (n = getline(&buf, &n, stdin)) != -1; i++){
     char aux[PIPE_BUF];
+    char **argumentos = malloc( (sizeof(char *)) * PIPE_BUF);
 
     //printf("%s.\n", buf);
 
     memcpy(aux, buf, n);
     aux[n-1] = '\0';
 
-    separa(aux, argumentos);
-    avalia_comando(argumentos, n);
+    separa(aux, argumentos+i);
+    avalia_comando(argumentos+i, n);
   }
 
 }
