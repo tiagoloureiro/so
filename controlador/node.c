@@ -1,9 +1,13 @@
 #include "node.h"
 #include "componentes/window.h"
+#include "componentes/filter.h"
+#include "componentes/const.h"
+#include "componentes/spawn.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include <fcntl.h>
 #include <unistd.h>
 
