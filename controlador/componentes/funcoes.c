@@ -1,4 +1,5 @@
 #include "funcoes.h"
+
 #include <limits.h>
 #include <stdlib.h>
 #include <stdio.h>
