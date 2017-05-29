@@ -10,7 +10,6 @@ node 9 const 100
 node 10 filter 2 > 5
 node 11 spawn shutdown -n
 node 12 tee log.txt
-connect 1 2
 connect 2 3 5
 connect 3 4
 connect 4 12
