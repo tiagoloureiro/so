@@ -7,5 +7,5 @@
 !input
 #
 
-/controlador/*.o
-/controlador/componentes/*.o
+!/controlador/*.o
+!/controlador/componentes/*.o
