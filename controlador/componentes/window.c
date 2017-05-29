@@ -1,11 +1,13 @@
+#include "window.h"
+#include "funcoes.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
 #include <limits.h>
-#include "funcoes.h"
-#include "window.h"
+
 
 void print_array(int *array, int inicio, int fim){
   for(int i=inicio; i<=fim; i++){

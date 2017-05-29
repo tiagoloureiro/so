@@ -1,6 +1,6 @@
-all: remove
+all:
+	@find . -name \*.o -delete
 	@cd controlador && $(MAKE) -s
-	@cd componentes && $(MAKE) -s
 
 remove:
 	@find . -name \*.o -delete

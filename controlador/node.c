@@ -32,7 +32,7 @@ int node(char* id, char* argv[]){
     }
 
     strcpy(str, "pipe_");
-    strcat(str, itos(ligacao));
+    strcat(str, str+8);
 
     int out = open(str, O_WRONLY);
 

@@ -4,10 +4,11 @@
 #include <fcntl.h>
 #include <string.h>
 #include <limits.h>
-#include "funcoes.h"
-#include "const.h"
 
-int const( char* argv[], int in, int out){
+#include "const.h"
+#include "funcoes.h"
+
+int constante( char* argv[], int in, int out){
   char *buf = NULL;
   char pal[PIPE_BUF];
   ssize_t n;

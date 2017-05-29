@@ -48,7 +48,7 @@ int connect(char** argumentos){
 
     write(fd, str, strlen(str));
 
-    //printf("id: %s ligado a: %s\n", argumentos[0], argumentos[i+1]);
+    printf("id: %s ligado a: %s\n", argumentos[0], argumentos[i+1]);
 
     close(fd);
   }

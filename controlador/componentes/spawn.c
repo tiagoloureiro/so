@@ -4,10 +4,11 @@
 #include <fcntl.h>
 #include <string.h>
 #include <limits.h>
-#include "funcoes.h"
-#include "spawn.h"
 #include <sys/types.h>
 #include <sys/wait.h>
+
+#include "spawn.h"
+#include "funcoes.h"
 
 int spawn(char *argv[], int in, int out){
   char *buf = NULL;
