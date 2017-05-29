@@ -6,6 +6,3 @@
 !config
 !input
 #
-
-!/controlador/*.o
-!/controlador/componentes/*.o
