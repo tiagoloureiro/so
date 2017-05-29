@@ -5,6 +5,7 @@
 !makefile
 !config
 !input
+!input_2
 #
 
 *.o
