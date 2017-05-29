@@ -1,4 +1,4 @@
 node 1 window 2 avg 2
 node 2 window 2 max 2
 node 3 window 2 avg 2
-connect 1 2
+connect 1 2 3
