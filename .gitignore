@@ -6,3 +6,5 @@
 !config
 !input
 #
+
+*.o
