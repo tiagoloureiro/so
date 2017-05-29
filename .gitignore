@@ -1,4 +1,4 @@
-# Para ignorar todos os ficheiros sem extensão menos o makefile e config
+# Para ignorar todos os ficheiros sem extensão menos o makefile, config e input
 *
 !*.*
 !*/
@@ -7,4 +7,5 @@
 !input
 #
 
-*.o
+/controlador/*.o
+/controlador/componentes/*.o
