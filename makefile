@@ -1,6 +1,7 @@
-all:
-	@find . -name \*.o -delete
+all: remove modulos
+
+modulos:
 	@cd controlador && $(MAKE) -s
 
 remove:
-	@find . -name \*.o -delete
+	@rm controlador/controlador
