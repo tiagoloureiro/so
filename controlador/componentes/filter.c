@@ -1,4 +1,3 @@
-#include "filter.h"
 #include "funcoes.h"
 
 #include <stdio.h>
@@ -10,7 +9,7 @@
 
 #include <limits.h>
 
-int filter(char *argv[], int in, int out){
+int main(int argc, char* argv[]){
   char *buf = NULL;
   char pal[PIPE_BUF];
   ssize_t n;

@@ -1,4 +1,3 @@
-#include "spawn.h"
 #include "funcoes.h"
 
 #include <stdio.h>
@@ -11,7 +10,7 @@
 
 #include <limits.h>
 
-int spawn(char *argv[], int in, int out){
+int main(int argc, char* argv[]){
   char *buf = NULL;
   char **pal = malloc( sizeof( char * ) * PIPE_BUF );
   ssize_t n;
@@ -24,8 +23,8 @@ int spawn(char *argv[], int in, int out){
 
   char *comando[PIPE_BUF];
 
-  int stdin_original = dup(0);
-  dup2(in, 0);
+  /*int stdin_original = dup(0);
+  dup2(in, 0);*/
 
   while((n = getline(&buf, &n, stdin)) != -1){
     linha_atual++;
@@ -49,14 +48,14 @@ int spawn(char *argv[], int in, int out){
     j++;
   }
 
-  dup2(stdin_original, in);
+  /*dup2(stdin_original, in);*/
 
   for(int i=0; i<j; i++){
     int estado;
     wait(&estado);
     if (WIFEXITED(estado)){
       tam[i] += sprintf(pal[i], "%s:%d\n", pal[i], estado);
-      write(out, pal[i], tam[i]);
+      write(1, pal[i], tam[i]);
     }
   }
 

@@ -1,4 +1,3 @@
-#include "window.h"
 #include "funcoes.h"
 
 #include <stdio.h>
@@ -104,7 +103,7 @@ int soma(int *array, int n, int fim){
   return res;
 }
 
-int window(char *argv[], int in, int out){
+int main(int argc, char* argv[]){
   char *buf = NULL;
   char pal[PIPE_BUF];
   ssize_t n;
@@ -121,8 +120,8 @@ int window(char *argv[], int in, int out){
   n_valores = atoi(argv[3]);
   opcao = argv[2];
 
-  int stdin_original = dup(0);
-  dup2(in, 0);
+  /*int stdin_original = dup(0);
+  dup2(in, 0);*/
 
   while((n = getline(&buf, &n, stdin)) != -1){
     linha_atual++;
@@ -149,10 +148,10 @@ int window(char *argv[], int in, int out){
     }
 
     tam += sprintf(pal, "%s:%d\n", pal, res);
-    write(out, pal, n + tam + 1);
+    write(1, pal, n + tam + 1);
   }
 
-  dup2(stdin_original, in);
+  /*dup2(stdin_original, in);*/
 
     //print_array(linhas, linha_atual-1);
   return 0;

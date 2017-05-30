@@ -1,10 +1,9 @@
-COMPONENTES=componentes/funcoes.c componentes/window.c componentes/const.c componentes/filter.c componentes/spawn.c
-LIB=node.c
+LIB=node.c connect.c
 
 all: controlador run
 
 controlador:
-	@gcc controlador.c $(LIB) $(COMPONENTES) -o controlador
+	@gcc controlador.c $(LIB) -o controlador
 
 run:
 	@./controlador < input

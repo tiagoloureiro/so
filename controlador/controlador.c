@@ -1,4 +1,5 @@
 #include "node.h"
+#include "connect.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -33,28 +34,6 @@ int separa(char *pal, char** argumentos){
   return 0;
 }
 
-int connect(char** argumentos){
-  char str[PIPE_BUF];
-
-  for(int i=0; argumentos[i+1]; i++){
-    char pipe[PIPE_BUF];
-
-    strcpy(str, "connect ");
-    strcat(str, argumentos[i+1]);
-
-    strcpy(pipe, "pipe_");
-    strcat(pipe, argumentos[0]);
-
-    int fd = open(pipe, O_WRONLY);
-
-    write(fd, str, strlen(str));
-
-    printf("id: %s ligado a: %s\n", argumentos[0], argumentos[i+1]);
-
-    close(fd);
-  }
-}
-
 int avalia_comando(char** argumentos, ssize_t n){
   char str[PIPE_BUF];
 
@@ -66,13 +45,10 @@ int avalia_comando(char** argumentos, ssize_t n){
     // Cria o pipe
     mkfifo(str, 0666);
 
-    /*for(int i=2; argumentos[i]; i++)
-      printf("%s | ", argumentos[i]);
-    printf("\n");*/
-
     // Cria o processo
     int pid = fork();
     if(pid == 0){
+      alarm(60);
       node(argumentos[1], argumentos+2);
       _exit(0);
     }

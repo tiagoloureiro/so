@@ -1,4 +1,3 @@
-#include "const.h"
 #include "funcoes.h"
 
 #include <stdio.h>
@@ -10,7 +9,7 @@
 
 #include <limits.h>
 
-int constante( char* argv[], int in, int out){
+int main(int argc, char* argv[]){
   char *buf = NULL;
   char pal[PIPE_BUF];
   ssize_t n;
@@ -20,8 +19,8 @@ int constante( char* argv[], int in, int out){
 
   int tam = sizeof(argv[1])/4;
 
-  int stdin_original = dup(0);
-  dup2(in, 0);
+  /*int stdin_original = dup(0);
+  dup2(in, 0);*/
 
   while((n = getline(&buf, &n, stdin)) != -1){
     if(flag == 1){
@@ -36,7 +35,7 @@ int constante( char* argv[], int in, int out){
       col2 = num[0];
       col4 = num[1];
 
-      write(out, pal, n + tam + 1);
+      write(1, pal, n + tam + 1);
 
       if(col2 >= col4){
         flag = 1;
@@ -44,7 +43,7 @@ int constante( char* argv[], int in, int out){
     }
   }
 
-  dup2(stdin_original, in);
+  /*dup2(stdin_original, in);*/
 
   return 0;
 }
