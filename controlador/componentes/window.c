@@ -16,7 +16,6 @@ void print_array(int *array, int inicio, int fim){
   printf("|\n");
 }
 
-
 int avg(int *array, int n, int fim){
   int res = 0;
   int i, j=0;
