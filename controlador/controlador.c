@@ -20,6 +20,7 @@
 
 int nodes[NOS];
 
+
 int separa(char *pal, char** argumentos){
   char* pch;
 
@@ -34,7 +35,7 @@ int separa(char *pal, char** argumentos){
   return 0;
 }
 
-int avalia_comando(char** argumentos, ssize_t n){
+int avalia_comando(char** argumentos){
   char str[PIPE_BUF];
 
   if(strcmp(argumentos[0], "node") == 0 && nodes[atoi(argumentos[1])-1] == VAZIO){
@@ -48,7 +49,7 @@ int avalia_comando(char** argumentos, ssize_t n){
     // Cria o processo
     int pid = fork();
     if(pid == 0){
-      alarm(60);
+      //alarm(60);
       node(argumentos[1], argumentos+2);
       _exit(0);
     }
@@ -68,18 +69,10 @@ int main(int argc, char * argv[]){
   for(int n=0; n<NOS; n++) nodes[n] = 0;
   int i;
 
-  // Criar 100 named pipes
-  /*for(int n=0; n<NOS; n++){
-    char str[PIPE_BUF];
-    sprintf(str, "pipe_%d", n+1);
-    mkfifo(str, 0666);
-  }*/
-
-  //for(int n=0; n<NOS; n++) nodes[n] = fork();
-
-  //memset
+  // Guarda todas as linhas num array de arrays de strings
   char ***argumentos = malloc( (sizeof(char *) * PIPE_BUF) * PIPE_BUF);
 
+  // trata o input linha a linha
   for(i=0; (n = getline(&buf, &n, stdin)) != -1; i++){
     char aux[PIPE_BUF];
     char **argumentos = malloc( (sizeof(char *)) * PIPE_BUF);
@@ -90,7 +83,7 @@ int main(int argc, char * argv[]){
     aux[n-1] = '\0';
 
     separa(aux, argumentos+i);
-    avalia_comando(argumentos+i, n);
+    avalia_comando(argumentos+i);
   }
 
 }
