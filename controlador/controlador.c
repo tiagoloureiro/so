@@ -20,7 +20,6 @@
 
 int nodes[NOS];
 
-
 int separa(char *pal, char** argumentos){
   char* pch;
 
