@@ -56,6 +56,13 @@ int avalia_comando(char** argumentos){
     //write(fd, pal, n);
   }else if(strcmp(argumentos[0], "connect") == 0){
     connect(argumentos+1);
+  }else if(strcmp(argumentos[0], "inject") == 0){
+    strcpy(str, "pipe_");
+    strcat(str, argumentos[1]);
+
+    int fd = open(str, O_WRONLY);
+
+    write(fd, "inject", 7);
   }
 
   return 0;
