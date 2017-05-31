@@ -63,6 +63,14 @@ int avalia_comando(char** argumentos){
     int fd = open(str, O_WRONLY);
 
     write(fd, "inject", 7);
+  }else if(strcmp(argumentos[0], "disconnect") == 0){
+      strcpy(str, "pipe_");
+      strcat(str, argumentos[1]);
+
+      int fd = open(str, O_WRONLY);
+
+      write(fd, "disconnect", 7);
+      nodes[atoi(argumentos[1])-1] = VAZIO;
   }
 
   return 0;
