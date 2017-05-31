@@ -1,4 +1,4 @@
-LIB=node.c connect.c
+LIB=node.c connect.c disconnect.c
 
 all: controlador run
 
