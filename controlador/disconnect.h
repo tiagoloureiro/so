@@ -1,0 +1,1 @@
+int disconnect(char** argumentos);
