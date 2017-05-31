@@ -1,5 +1,6 @@
 #include "node.h"
 #include "connect.h"
+#include "disconnect.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -38,7 +39,7 @@ int avalia_comando(char** argumentos){
   char str[PIPE_BUF];
 
   if(strcmp(argumentos[0], "node") == 0 && nodes[atoi(argumentos[1])-1] == VAZIO){
-
+    printf("node %s\n", argumentos[1]);
     strcpy(str, "pipe_");
     strcat(str, argumentos[1]);
 
@@ -55,6 +56,8 @@ int avalia_comando(char** argumentos){
     nodes[atoi(argumentos[1])-1] = ABERTO;
     //write(fd, pal, n);
   }else if(strcmp(argumentos[0], "connect") == 0){
+    printf("connect %s ->", argumentos[1]);
+    for(int it=1; argumentos[it]; it++) printf(" %s", argumentos[it]);
     connect(argumentos+1);
   }else if(strcmp(argumentos[0], "inject") == 0){
     strcpy(str, "pipe_");
@@ -63,14 +66,17 @@ int avalia_comando(char** argumentos){
     int fd = open(str, O_WRONLY);
 
     write(fd, "inject", 7);
+  }else if(strcmp(argumentos[0], "remove") == 0){
+    strcpy(str, "pipe_");
+    strcat(str, argumentos[1]);
+
+    int fd = open(str, O_WRONLY);
+
+    write(fd, "disconnect", 7);
+    nodes[atoi(argumentos[1])-1] = VAZIO;
   }else if(strcmp(argumentos[0], "disconnect") == 0){
-      strcpy(str, "pipe_");
-      strcat(str, argumentos[1]);
-
-      int fd = open(str, O_WRONLY);
-
-      write(fd, "disconnect", 7);
-      nodes[atoi(argumentos[1])-1] = VAZIO;
+    printf("disconnect %s %s\n", argumentos[0], argumentos[1]);
+    disconnect(argumentos+1);
   }
 
   return 0;
