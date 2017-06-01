@@ -26,6 +26,6 @@ int connect(char** argumentos){
 
     //printf("id: %s ligado a: %s\n", argumentos[0], argumentos[i+1]);
 
-    close(fd);
+    //close(fd);
   }
 }

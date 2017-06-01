@@ -1,3 +1,4 @@
+#include "componentes/funcoes.h"
 #include "node.h"
 #include "connect.h"
 #include "disconnect.h"
@@ -19,81 +20,79 @@
 #define VAZIO 0
 #define ABERTO 1
 
-int nodes[NOS];
+//sstruct no nodes[NOS];
 
-int separa(char *pal, char** argumentos){
-  char* pch;
+int estados[NOS];
+int ligacoes[NOS][NOS];
+int in[NOS];
+int out[NOS];
+char comandos[NOS][PIPE_BUF][PIPE_BUF];
 
-  pch = strtok (pal," ");
+int stdout_original;
+int stdin_original;
 
-  for (int k=0; pch != NULL; k++){
-    argumentos[k] = malloc( PIPE_BUF );
-    sprintf(argumentos[k], "%s", pch);
-    pch = strtok (NULL, " ");
-  }
+int avalia_comando(char** argumentos, char* aux){
+  char* str = (char *)malloc(sizeof(char *) * PIPE_BUF);
 
-  return 0;
-}
-
-int avalia_comando(char** argumentos){
-  char str[PIPE_BUF];
-
-  if(strcmp(argumentos[0], "node") == 0 && nodes[atoi(argumentos[1])-1] == VAZIO){
-    printf("node %s\n", argumentos[1]);
+  if(strcmp(argumentos[0], "node") == 0){
     strcpy(str, "pipe_");
     strcat(str, argumentos[1]);
 
     // Cria o pipe
     mkfifo(str, 0666);
+    free(str);
 
     // Cria o processo
     int pid = fork();
     if(pid == 0){
-      //alarm(60);
-      node(argumentos[1], argumentos+2);
+      node(argumentos[1], argumentos+2, stdin_original, stdout_original);
       _exit(0);
     }
-    nodes[atoi(argumentos[1])-1] = ABERTO;
+
     //write(fd, pal, n);
   }else if(strcmp(argumentos[0], "connect") == 0){
-    printf("connect %s ->", argumentos[1]);
-    for(int it=1; argumentos[it]; it++) printf(" %s", argumentos[it]);
     connect(argumentos+1);
   }else if(strcmp(argumentos[0], "inject") == 0){
     strcpy(str, "pipe_");
     strcat(str, argumentos[1]);
 
     int fd = open(str, O_WRONLY);
+    free(str);
 
-    write(fd, "inject", 7);
-  }else if(strcmp(argumentos[0], "remove") == 0){
+    write(fd, aux, strlen(aux));
+  }/*else if(strcmp(argumentos[0], "remove") == 0){
     strcpy(str, "pipe_");
     strcat(str, argumentos[1]);
 
     int fd = open(str, O_WRONLY);
+    free(str);
 
     write(fd, "disconnect", 7);
-    nodes[atoi(argumentos[1])-1] = VAZIO;
+    //(*(nodes + (atoi(argumentos[1])-1))).estado = VAZIO;
+    //(nodes + atoi(argumentos[1])-1)->estado = VAZIO;
   }else if(strcmp(argumentos[0], "disconnect") == 0){
     printf("disconnect %s %s\n", argumentos[0], argumentos[1]);
     disconnect(argumentos+1);
-  }
+  }*/
 
   return 0;
 }
 
 int main(int argc, char * argv[]){
+   stdin_original = dup(0);
+   stdout_original = dup(1);
+
   char *buf = NULL;
   ssize_t n;
 
-  for(int n=0; n<NOS; n++) nodes[n] = 0;
+  //for(int n=0; n<NOS; n++) nodes[n] = 0;
   int i;
 
   // Guarda todas as linhas num array de arrays de strings
   char ***argumentos = malloc( (sizeof(char *) * PIPE_BUF) * PIPE_BUF);
 
   // trata o input linha a linha
-  for(i=0; (n = getline(&buf, &n, stdin)) != -1; i++){
+  for(i=0; (n = getline(&buf, &n, stdin)) > 0; i++){
     char aux[PIPE_BUF];
     char **argumentos = malloc( (sizeof(char *)) * PIPE_BUF);
 
@@ -102,8 +101,21 @@ int main(int argc, char * argv[]){
     memcpy(aux, buf, n);
     aux[n-1] = '\0';
 
-    separa(aux, argumentos+i);
-    avalia_comando(argumentos+i);
+    separa(aux, argumentos);
+    //printf("%s: %s\n",aux[0], aux[1]);
+    avalia_comando(argumentos, aux);
+
+    //printf("%s: %s\n", argumentos[0], argumentos[1]);
+
+    argumentos++;
+  }
+
+  for(int i=0; i<3; i++){
+    int estado;
+    wait(&estado);
+    if (WIFEXITED(estado)){
+      printf("\tno %d estado=%d\n", i+1, estado);
+    }
   }
 
 }

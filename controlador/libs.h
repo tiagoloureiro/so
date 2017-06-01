@@ -7,6 +7,12 @@
   #define VAZIO 0
   #define ABERTO 1
 
+  int estados[NOS];
+  int ligacoes[NOS][NOS];
+  int in[NOS];
+  int out[NOS];
+  char comandos[NOS][PIPE_BUF][PIPE_BUF];
+
   struct no{
     int estado; // VAZIO || ABERTO
     int ligacoes[NOS]; // PARA ONDE ENVIA O OUTPUT
