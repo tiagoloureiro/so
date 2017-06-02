@@ -15,7 +15,6 @@ int main(int argc, char* argv[]){
     memcpy(pal, buf, n);
     pal[n-1] = '\0';
     int tam = sprintf(pal, "%s:%s\n", pal, argv[1]);
-
     write(1, pal, tam);
   }
 
