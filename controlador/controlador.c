@@ -23,11 +23,6 @@ int avalia_comando(char** argumentos, char* aux){
   char* str = (char *)malloc(sizeof(char *) * PIPE_BUF);
   char* str_aux = (char *)malloc(sizeof(char *) * PIPE_BUF);
 
-
-  char foo[4096 + 1];
-  memset(foo, 0, 4096);
-
-
   if(strcmp(argumentos[0], "node") == 0){
     sprintf(str, "pipe_%s", argumentos[1]);
 
