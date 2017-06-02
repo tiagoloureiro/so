@@ -51,6 +51,8 @@ int node(char* id, char* argv[], char* aux, int pipes[NOS][2], int pipes_aux[NOS
         execvp(argv[0], argv+1);
       }
 
+    }else{
+      
     }
 
     free(argumentos);
