@@ -4,9 +4,11 @@
 
 #include <unistd.h>
 
+#include <limits.h>
+
 int main(int argc, char* argv[]){
   char *buf = NULL;
-  char *pal;
+  char pal[PIPE_BUF];
   ssize_t n;
 
   while((n = getline(&buf, &n, stdin)) != -1){
