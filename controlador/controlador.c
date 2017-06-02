@@ -100,15 +100,18 @@ int main(int argc, char * argv[]){
     argumentos++;
   }
 
+  /*printf("tito\n");
+  for(int i=0; pipes[i]; i++) close(pipes[i][0]);
+  printf("tito\n");*/
   for(int i=0; i<12; i++){
     int estado;
+    close(pipes[i][1]);
     wait(&estado);
     if(WIFEXITED(estado)){
       char* leitura_comandos = malloc( (sizeof( char )) * PIPE_BUF);
       read(pipes[i][0], leitura_comandos, PIPE_BUF);
       printf("%d -> %s\n", i+1, leitura_comandos);
       free(leitura_comandos);
-      close(pipes[i][1]);
     }
   }
 }

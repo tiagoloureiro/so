@@ -12,7 +12,6 @@
 
 int node(char* id, char* argv[], char* aux, int pipes[NOS][2], int pipes_aux[NOS]){
   int onde_escreve[NOS][NOS];
-  char* leitura_comandos = malloc( sizeof(char) * PIPE_BUF);
   int it = 0;
   int id_int = atoi(id);
   int n = 0;
@@ -21,7 +20,8 @@ int node(char* id, char* argv[], char* aux, int pipes[NOS][2], int pipes_aux[NOS
   int link[2];
 
   while(1){
-    char **argumentos = malloc( (sizeof(char *)) * PIPE_BUF);
+    char** argumentos = malloc( (sizeof(char *)) * PIPE_BUF);
+    char* leitura_comandos = malloc( sizeof(char) * PIPE_BUF);
 
     read(pipes_aux[atoi(id)-1], leitura_comandos, PIPE_BUF);
     //printf("%s -> %s\n", id, leitura_comandos);
@@ -45,22 +45,17 @@ int node(char* id, char* argv[], char* aux, int pipes[NOS][2], int pipes_aux[NOS
       close(pipes[id_int-1][1]);
       execvp(argumentos[2], argumentos+3);
 
-      /*for(int k=0; k<n; k++){
-        dup2 (onde_escreve[id_int-1][k], STDOUT_FILENO);
-        close(onde_escreve[id_int-1][k]);
+      for(int k=0; k<n; k++){
+        dup2 (onde_escreve[id_int-1][k], STDIN_FILENO);
         close(onde_escreve[id_int-1][k]);
         execvp(argv[0], argv+1);
-      }*/
+      }
 
-      _exit(0);
-    }else{
-      printf("OTHER: %s -> %s\n", id, leitura_comandos);
     }
 
     free(argumentos);
+    free(leitura_comandos);
   }
-
-  free(leitura_comandos);
 
   return 0;
 }
