@@ -10,16 +10,17 @@
 
 int separa(char *pal, char** argumentos){
   char* pch;
+  int k;
 
   pch = strtok (pal," ");
 
-  for (int k=0; pch != NULL; k++){
+  for (k=0; pch != NULL; k++){
     argumentos[k] = malloc( PIPE_BUF );
     sprintf(argumentos[k], "%s", pch);
     pch = strtok (NULL, " ");
   }
 
-  return 0;
+  return k;
 }
 
 int* get_coluna_two(char *p, int c1, int c2, int* num){

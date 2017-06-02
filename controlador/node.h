@@ -1,6 +1,8 @@
 #ifndef _NODE_
 #define _NODE_
 
-  int node(char* id, char* argv[], int in_o, int out_o, char* aux, int pipes[100]);
+  #include "componentes/funcoes.h"
+
+  int node(char* id, char* argv[], char* aux, int pipes[NOS][2], int pipes_aux[NOS]);
 
 #endif

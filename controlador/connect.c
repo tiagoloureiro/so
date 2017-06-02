@@ -9,28 +9,16 @@
 #include <stdlib.h>
 #include <string.h>
 
-int connect(char** argumentos, int pipes[100]){
-  char str[PIPE_BUF];
+int connect(char** argumentos, int pipes[NOS][2], int pipes_aux[NOS]){
+  char* str = (char *)malloc(sizeof(char *) * PIPE_BUF);
   int id = atoi(argumentos[0]);
+  int tam = 0;
 
-  for(int i=0; argumentos[i+1]; i++){
-    char pipe[PIPE_BUF];
-
-    strcpy(str, "connect");
-    for(int i=1; argumentos[i]; i++){
-      strcat(str, " ");
-      strcat(str, argumentos[i]);
-    }
-
-    /*strcpy(pipe, "pipe_");
-    strcat(pipe, argumentos[0]);
-
-    int fd = open(pipe, O_WRONLY | O_TRUNC);*/
-
-    write(pipes[id-1], str, strlen(str));
-
-    //printf("id: %s ligado a: %s\n", argumentos[0], argumentos[i+1]);
-
-    close(pipes[id-1]);
+  tam = sprintf(str, "connect %s", argumentos[1]);
+  for(int i=2; argumentos[i]; i++){
+    tam += sprintf(str, "%s %s", str, argumentos[i]);
   }
+
+  write(pipes_aux[id-1], str, tam);
+
 }

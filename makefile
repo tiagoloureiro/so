@@ -10,3 +10,6 @@ modulos:
 
 remove:
 	@rm -f $(CONTROLADOR) $(COMPONENTES) $(BIBLIOTECAS)
+
+remove_fifos:
+	@rm -f controlador/pipe_* controlador/aux_*

@@ -1,6 +1,8 @@
 #ifndef _CONNECT_
 #define _CONNECT_
 
-int connect(char** argumentos, int pipes[100]);
+  #include "componentes/funcoes.h"
+
+  int connect(char** argumentos, int pipes[NOS][2], int pipes_aux[NOS]);
 
 #endif
