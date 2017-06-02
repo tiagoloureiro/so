@@ -100,9 +100,8 @@ int main(int argc, char * argv[]){
     argumentos++;
   }
 
-  /*printf("tito\n");
-  for(int i=0; pipes[i]; i++) close(pipes[i][0]);
-  printf("tito\n");*/
+  //for(int i=0; pipes[i]; i++) close(pipes[i][0]);
+
   for(int i=0; i<12; i++){
     int estado;
     close(pipes[i][1]);

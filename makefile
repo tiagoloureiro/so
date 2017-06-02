@@ -13,3 +13,6 @@ remove:
 
 remove_fifos:
 	@rm -f controlador/pipe_* controlador/aux_*
+
+relatorio:
+	@libreoffice --headless --convert-to pdf relatorio.odt

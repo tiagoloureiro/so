@@ -32,12 +32,12 @@ int node(char* id, char* argv[], char* aux, int pipes[NOS][2], int pipes_aux[NOS
     n = separa(str, argumentos);
 
     if(strstr(leitura_comandos, "connect")){
-      printf("CONNECT: %s -> %s\n", id, leitura_comandos);
+      //printf("CONNECT: %s -> %s\n", id, leitura_comandos);
       for(int i=1; argumentos[i]; i++){
         onde_escreve[id_int-1][i-1] = pipes[atoi(argumentos[i]) - 1][0];
       }
     }else if(strstr(leitura_comandos, "inject")){
-      printf("INJECT: %s -> %s\n", id, leitura_comandos);
+      //printf("INJECT: %s -> %s\n", id, leitura_comandos);
 
       //dup2(1, pipes[id_int-1]);
       dup2 (pipes[id_int-1][1], STDOUT_FILENO);
