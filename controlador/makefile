@@ -6,4 +6,4 @@ controlador:
 	@gcc controlador.c $(LIB) -o controlador
 
 run:
-	@./controlador < input_2
+	@./controlador < input

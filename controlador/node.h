@@ -1,6 +1,6 @@
 #ifndef _NODE_
 #define _NODE_
 
-  int node(char* id, char* argv[], int stdin_original, int stdout_original, char* aux;);
+  int node(char* id, char* argv[], int in_o, int out_o, char* aux, int pipes[100]);
 
 #endif

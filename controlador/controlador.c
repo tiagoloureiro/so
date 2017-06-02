@@ -42,17 +42,20 @@ int avalia_comando(char** argumentos, char* aux){
     mkfifo(str, 0666);
     mkfifo(str_aux, 0666);
 
+    int fd = open(str, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+    pipes[atoi(argumentos[1])-1] = fd;
+
     // Cria o processo
     int pid = fork();
     if(pid == 0){
       estados[atoi(argumentos[1])-1] = ABERTO;
-      node(argumentos[1], argumentos+2, stdin_original, stdout_original, aux);
+      node(argumentos[1], argumentos+2, stdin_original, stdout_original, aux, pipes);
       _exit(0);
     }
 
     //write(fd, pal, n);
   }else if(strcmp(argumentos[0], "connect") == 0){
-    connect(argumentos+1);
+    connect(argumentos+1, pipes);
   }else if(strcmp(argumentos[0], "inject") == 0){
     strcpy(str, "pipe_");
     strcat(str, argumentos[1]);
@@ -115,7 +118,7 @@ int main(int argc, char * argv[]){
     argumentos++;
   }
 
-  for(int i=0; i<12; i++){
+  /*for(int i=0; i<12; i++){
     int estado;
     wait(&estado);
     if (WIFEXITED(estado)){
@@ -127,13 +130,10 @@ int main(int argc, char * argv[]){
         sprintf(auxxx, "%d", i+1);
         strcat(str, auxxx);
 
-        int fd = open(str, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
-        //write(fd, "Tito", strlen("Tito"));
-
-        read(fd, leitura, PIPE_BUF);
-        close(fd);
+        read(pipes[i], leitura, PIPE_BUF);
+        close(pipes[i]);
         printf("%d -> %s\n",i+1, leitura);
     }
-  }
+  }*/
 
 }
