@@ -14,18 +14,21 @@ int connect(char** argumentos){
   for(int i=0; argumentos[i+1]; i++){
     char pipe[PIPE_BUF];
 
-    strcpy(str, "connect ");
-    strcat(str, argumentos[i+1]);
+    strcpy(str, "connect");
+    for(int i=1; argumentos[i]; i++){
+      strcat(str, " ");
+      strcat(str, argumentos[i]);
+    }
 
     strcpy(pipe, "pipe_");
     strcat(pipe, argumentos[0]);
 
-    int fd = open(pipe, O_WRONLY);
+    int fd = open(pipe, O_WRONLY | O_TRUNC);
 
     write(fd, str, strlen(str));
 
     //printf("id: %s ligado a: %s\n", argumentos[0], argumentos[i+1]);
 
-    //close(fd);
+    close(fd);
   }
 }

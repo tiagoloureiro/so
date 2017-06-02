@@ -23,29 +23,30 @@
 //sstruct no nodes[NOS];
 
 int estados[NOS];
-int ligacoes[NOS][NOS];
-int in[NOS];
-int out[NOS];
-char comandos[NOS][PIPE_BUF][PIPE_BUF];
+int pipes[NOS];
 
 int stdout_original;
 int stdin_original;
 
 int avalia_comando(char** argumentos, char* aux){
   char* str = (char *)malloc(sizeof(char *) * PIPE_BUF);
+  char* str_aux = (char *)malloc(sizeof(char *) * PIPE_BUF);
 
   if(strcmp(argumentos[0], "node") == 0){
     strcpy(str, "pipe_");
     strcat(str, argumentos[1]);
+    strcpy(str_aux, "aux_");
+    strcat(str_aux, argumentos[1]);
 
     // Cria o pipe
     mkfifo(str, 0666);
-    free(str);
+    mkfifo(str_aux, 0666);
 
     // Cria o processo
     int pid = fork();
     if(pid == 0){
-      node(argumentos[1], argumentos+2, stdin_original, stdout_original);
+      estados[atoi(argumentos[1])-1] = ABERTO;
+      node(argumentos[1], argumentos+2, stdin_original, stdout_original, aux);
       _exit(0);
     }
 
@@ -56,10 +57,8 @@ int avalia_comando(char** argumentos, char* aux){
     strcpy(str, "pipe_");
     strcat(str, argumentos[1]);
 
-    int fd = open(str, O_WRONLY);
-    free(str);
-
-    write(fd, aux, strlen(aux));
+    int fd = open(str, O_WRONLY | O_TRUNC);
+    write(fd, aux, strlen(aux)+1);
   }/*else if(strcmp(argumentos[0], "remove") == 0){
     strcpy(str, "pipe_");
     strcat(str, argumentos[1]);
@@ -74,6 +73,9 @@ int avalia_comando(char** argumentos, char* aux){
     printf("disconnect %s %s\n", argumentos[0], argumentos[1]);
     disconnect(argumentos+1);
   }*/
+
+  free(str);
+  free(str_aux);
 
   return 0;
 }
@@ -94,27 +96,43 @@ int main(int argc, char * argv[]){
   // trata o input linha a linha
   for(i=0; (n = getline(&buf, &n, stdin)) > 0; i++){
     char aux[PIPE_BUF];
+    char aux_2[PIPE_BUF];
     char **argumentos = malloc( (sizeof(char *)) * PIPE_BUF);
 
     //printf("%s.\n", buf);
 
     memcpy(aux, buf, n);
+    memcpy(aux_2, buf, n);
     aux[n-1] = '\0';
+    aux_2[n-1] = '\0';
 
     separa(aux, argumentos);
     //printf("%s: %s\n",aux[0], aux[1]);
-    avalia_comando(argumentos, aux);
+    avalia_comando(argumentos, aux_2);
 
     //printf("%s: %s\n", argumentos[0], argumentos[1]);
 
     argumentos++;
   }
 
-  for(int i=0; i<3; i++){
+  for(int i=0; i<12; i++){
     int estado;
     wait(&estado);
     if (WIFEXITED(estado)){
-      printf("\tno %d estado=%d\n", i+1, estado);
+
+        char str[PIPE_BUF];
+        char auxxx[PIPE_BUF];
+        char leitura[PIPE_BUF];
+        strcpy(str, "pipe_");
+        sprintf(auxxx, "%d", i+1);
+        strcat(str, auxxx);
+
+        int fd = open(str, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+        //write(fd, "Tito", strlen("Tito"));
+
+        read(fd, leitura, PIPE_BUF);
+        close(fd);
+        printf("%d -> %s\n",i+1, leitura);
     }
   }
 
